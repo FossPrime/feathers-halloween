@@ -10,22 +10,11 @@ export class Messages extends Service {
   }
 }
 
-const L = 'lol, jk, lmao, btw, ikr, rofl, OMG, smh, imo, hyfr'.split(',')
-const append = () => (ctx: any) => {
-  if (typeof ctx.data.text === 'string') {
-    const suffix = L[(L.length * Math.random()) | 0]
-    ctx.data.text = ctx.data.text + ', - ' + suffix
-  }
-  return ctx
-}
-
 export const hooks: any = {
   around: {
     all: [authenticate('jwt'), resolveAll(messagesResolvers)]
   },
-  before: {
-    create: [append()]
-  },
+  before: {},
   after: {},
   error: {}
 }

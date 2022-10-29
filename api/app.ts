@@ -18,7 +18,7 @@ import { services } from './services/index.js'
 import appHooks from './app.hooks.js'
 import channels from './channels.js'
 import authentication from './authentication.js'
-import HolidayBot from './HolidayBot.js'
+import { HolidayBot } from './HolidayBot.js'
 // Don't remove this comment. It's needed to format import lines nicely.
 
 export const main = async () => {

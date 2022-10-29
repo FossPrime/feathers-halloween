@@ -14,6 +14,7 @@ import {
   usersResultSchema,
   usersQuerySchema
 } from '../../services/users/users.schema.js'
+import { HolidayAvatar } from '../../HolidayBot.js'
 
 // Resolver for the basic data model (e.g. creating new entries)
 export const usersDataResolver = resolve<UsersData, HookContext>({
@@ -21,14 +22,15 @@ export const usersDataResolver = resolve<UsersData, HookContext>({
   validate: 'before',
   properties: {
     password: passwordHash({ strategy: 'local' }),
-    avatar: async (_value, user) => {
+    avatar: async (_value, user, context) => {
       // Gravatar uses MD5 hashes from an email address to get the image
+      const uidField = context.app.service('users').id
       const hash = crypto
         .createHash('md5')
         .update(user.email.toLowerCase())
         .digest('hex')
       // Return the full avatar URL
-      return `https://s.gravatar.com/avatar/${hash}?s=60`
+      return user[uidField] === '1' ? HolidayAvatar : `https://s.gravatar.com/avatar/${hash}?s=60`
     }
   }
 })
