@@ -23,7 +23,9 @@ export const messagesDataSchema = schema(
       createdAt: {
         type: 'string'
       },
-      user: Object.assign(usersDataSchema.toJSON(), { $id: undefined })
+      user: { // TODO: Object.assign(usersDataSchema.toJSON(), { $id: undefined })
+        additionalProperties: true
+      }
     }
   } as const,
   ajv

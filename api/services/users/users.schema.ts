@@ -10,10 +10,10 @@ export const usersDataSchema = schema(
     additionalProperties: false,
     required: ['email', 'password'],
     properties: {
-      id: {
+      _id: { // MongoDB style
         type: 'string'
       },
-      _id: {
+      id: { // Postgress style
         type: 'string'
       },
       createdAt: {

@@ -24,7 +24,7 @@ export const hooks: any = {
 
 export const createModel = (app: Application) => {
   return database({
-    id: '_id',
+    id: '_id', // todo: https://github.com/feathersjs/feathers/issues/2839
     startId: 1,
     paginate: {
       default: 2,

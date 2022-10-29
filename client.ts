@@ -6,6 +6,7 @@ import {
   authentication
 } from '@feathersjs/client'
 import io from 'socket.io-client'
+import { HolidayEmojii } from './api/HolidayBot.js'
 import type { MessagesData } from './api/services/messages/messages.schema.js'
 import type { UsersData } from './api/services/users/users.schema.js'
 
@@ -58,9 +59,8 @@ const loginScreenHTML = `<main class="login container">
 const chatHTML = `<main class="flex flex-column">
   <header class="title-bar flex flex-row flex-center">
     <div class="title-wrapper block center-element">
-      <img class="logo" src="https://feathersjs.com/img/feathers-logo-wide.png"
-        alt="Feathers">
-      <span class="title">Vite Chat</span>
+    ${HolidayEmojii} <img class="logo" src="https://feathersjs.com/img/feathers-logo-wide.png"
+        alt="Feathers"> ${HolidayEmojii}
     </div>
   </header>
 
