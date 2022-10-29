@@ -10,7 +10,7 @@ export class Users extends Service {
   }
 }
 
-export const hooks = {
+export const hooks: any = {
   around: {
     all: [],
     find: [authenticate('jwt'), resolveAll(usersResolvers)],

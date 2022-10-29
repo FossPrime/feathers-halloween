@@ -19,7 +19,7 @@ const append = () => (ctx: any) => {
   return ctx
 }
 
-export const hooks = {
+export const hooks: any = {
   around: {
     all: [authenticate('jwt'), resolveAll(messagesResolvers)]
   },
