@@ -1,6 +1,45 @@
 import type { Application } from './declarations.js'
 const sleep = (s: number) => new Promise((r) => setTimeout(r, s * 1000 | 0))
 
+const HolidayMessages = [
+
+"Yes, I'm Sick, Officer. Sick From The Disease Eating Away At Me Inside. Sick Of People Who Don't Appreciate Their Blessings. Sick Of Those Who Scoff At The Suffering Of Others. I'm Sick Of It All!",
+
+"When Faced With Death, Who Should Live Versus Who Will Live Are Two Entirely Separate Things.",
+
+"I've Never Murdered Anyone In My Life. The Decisions Were Up To Them.",
+
+"How You Play The Cards You're Dealt Is All That Matters.",
+
+"Once You Are In Hell, Only The Devil Can Help You Out.",
+
+"As You Can See, The Choice Is Not So Clear When You're Face To Face With The People Who's Blood Will Stain Your Hands",
+
+"Don't Worry, You're Sound Asleep And Can't Feel A Thing.",
+
+"You're Probably Wondering Where You Are. I'll Tell You Where You Might Be. You Might Be In The Room You Die In.",
+
+"Congratulations, You Are Still Alive. Most People Are So Ungrateful To Be Alive... But Not You, Not Anymore.",
+
+"Every Day Of Your Working Life You've Given People News That They'll Die. Now, You Will Be The Cause Of Death.",
+
+"It Will Be Like Finding A Needle In A Haystack.",
+
+"You Think It's Over Just Because I Am Dead, But The Games Have Just Begun.",
+
+"The Rules Of Our Game Have Been Made Very Clear. You Need To Abide By Those Rules.",
+
+"If You're Good At Anticipating The Human Mind, It Leaves Nothing To Chance.",
+
+"Live Or Die. Make Your Choice.",
+
+"I Want To Play A Game.",
+
+"Game Over."
+
+]
+
+  
 export const HolidayEmojii = '🎃'
 export const HolidayBot = async (app: Application) => {
   const users = app.service('users')
