@@ -52,5 +52,13 @@
     "installDependencies": false,
     "startCommand": "npm run dev"
   },
-  "prettier": "@github/prettier-config"
+  "prettier": {
+    "x-src": "@github/prettier-config",
+    "printWidth": 120,
+    "semi": false,
+    "singleQuote": true,
+    "bracketSpacing": false,
+    "trailingComma": "none",
+    "arrowParens": "avoid"
+  }
 }
