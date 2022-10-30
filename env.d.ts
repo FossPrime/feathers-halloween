@@ -7,5 +7,4 @@
 // declare module '@feathersjs/authentication'
 // declare module 'feathers-database'
 
-declare const __GIT_NAME: string
-declare const __GIT_EMAIL: string
+declare const __DEV_USER: { name: string, email: string }

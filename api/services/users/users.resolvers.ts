@@ -21,7 +21,7 @@ export const usersDataResolver = resolve<UsersData, HookContext>({
   schema: usersDataSchema,
   validate: 'before',
   properties: {
-    name: async (_value, user) => _value || user.email.split('@').at(0),
+    name: async (_value, u) => _value || u.email.charAt(0).toLocaleUpperCase() + u.email.split('@').at(0).slice(1),
     password: passwordHash({ strategy: 'local' }),
     avatar: async (_value, user, context) => {
       // Gravatar uses MD5 hashes from an email address to get the image
