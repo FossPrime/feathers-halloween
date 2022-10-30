@@ -30,7 +30,7 @@ export const usersDataResolver = resolve<UsersData, HookContext>({
         .update(user.email.toLowerCase())
         .digest('hex')
       // Return the full avatar URL
-      return user[uidField] === '1' ? HolidayAvatar : `https://s.gravatar.com/avatar/${hash}?s=60`
+      return user[uidField] === 69 ? HolidayAvatar : `https://s.gravatar.com/avatar/${hash}?s=60`
     }
   }
 })

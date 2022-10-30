@@ -22,7 +22,7 @@ export const messagesDataResolver = resolve<MessagesData, HookContext>({
     userId: async (_value, _message, context) => {
       const uidField = context.app.service('users').id
       const user = context.params.user
-      return user ? user[uidField] : _value || '1'
+      return user ? user[uidField] : _value
     },
     createdAt: async () => {
       return (new Date()).toISOString()

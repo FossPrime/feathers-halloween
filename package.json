@@ -38,6 +38,7 @@
     "cors": "^2.8.5",
     "feathers-database": "npm:@feathersjs/memory@pre",
     "helmet": "^5.1.0",
+    "pnpm": "^7.14.1",
     "socket.io-client": "^4.5.1"
   },
   "devDependencies": {

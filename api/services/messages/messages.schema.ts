@@ -18,7 +18,7 @@ export const messagesDataSchema = schema(
         type: 'string'
       },
       userId: {
-        type: 'string'
+        type: 'number'
       },
       createdAt: {
         type: 'string'

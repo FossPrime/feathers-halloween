@@ -14,9 +14,12 @@ export default function (app: Application) {
   app.on('login', (authResult: any, { connection: conn }: any) => {
     if (conn) {
       // REST has no real-time connection
-      // const user = conn.user;
+      const user = authResult.user
+      // console.log('Conm,', authResult )
       app.channel('anonymous').leave(conn)
       app.channel('authenticated').join(conn)
+      const messages = app.service('messages')
+      messages.create({ text: 'Let\'s play a game ' + user?.email, userId: 69 })
 
       // if(user.isAdmin) { app.channel('admins').join(conn) }
       // if(Array.isArray(user.rooms)) user.rooms.forEach(r => app.channel(`rooms/${r.id}`).join(conn))
