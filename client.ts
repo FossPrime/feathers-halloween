@@ -6,7 +6,7 @@ import {
   authentication
 } from '@feathersjs/client'
 import io from 'socket.io-client'
-import { HolidayEmojii } from './api/HolidayBot.js'
+import { emojii, accentColor } from './api/HolidayBot.js'
 import type { MessagesData } from './api/services/messages/messages.schema.js'
 import type { UsersData } from './api/services/users/users.schema.js'
 
@@ -59,8 +59,8 @@ const loginScreenHTML = `<main class="login container">
 const chatHTML = `<main class="flex flex-column">
   <header class="title-bar flex flex-row flex-center">
     <div class="title-wrapper block center-element">
-    ${HolidayEmojii} <img class="logo" src="https://feathersjs.com/img/feathers-logo-wide.png"
-        alt="Feathers"> ${HolidayEmojii}
+    ${emojii} <img class="logo" src="https://feathersjs.com/img/feathers-logo-wide.png"
+        alt="Feathers"> ${emojii}
     </div>
   </header>
 
@@ -123,14 +123,13 @@ const addMessage = (message: MessagesData) => {
 
   if (chat) {
     const img = user
-      ? `<img src="${user.avatar}" alt="${
-          user.name || user.email
-        }" class="avatar" crossorigin="anonymous">`
+      ? `<img src="${user.avatar}" alt="${user.name || user.email
+      }" class="avatar" crossorigin="anonymous">`
       : ''
     const userName = user
       ? `<span class="username font-600">${escape(
-          user.name || user.email || ''
-        )}</span>`
+        user.name || user.email || ''
+      )}</span>`
       : ''
     chat.innerHTML += `<div class="message flex flex-row">${img}
       <div class="message-wrapper">
@@ -186,15 +185,13 @@ const showChat = async () => {
 
 // Retrieve email/password object from the login/signup page
 const getCredentials = () => {
-  const dev = import.meta.env.DEV
-    ? 'You #' + crypto.getRandomValues(new Uint16Array(1))
-    : ''
+  const dev = import.meta.env.DEV ? { email: __GIT_EMAIL, password: 'password' } : false
   const email =
-    document.querySelector<HTMLInputElement>('[name="email"]')?.value
+    document.querySelector<HTMLInputElement>('[name="email"]')?.value || ''
   const password =
-    document.querySelector<HTMLInputElement>('[name="password"]')?.value
+    document.querySelector<HTMLInputElement>('[name="password"]')?.value || ''
 
-  return email && password ? { email, password } : { email: dev, password: dev }
+  return email === '' && dev ? dev : { email, password }
 }
 
 // Log in either using the given email/password or the token from storage
@@ -226,7 +223,7 @@ const login = async (credentials?: any): Promise<boolean> => {
 const logout = async () => {
   try {
     await client.logout()
-  } catch (e) {}
+  } catch (e) { }
   localStorage.removeItem('feathers-jwt')
   showLogin()
 }
@@ -294,9 +291,10 @@ client.service('messages').on('created', addMessage)
 // We will also see when new users get created in real-time
 client.service('users').on('created', addUser)
 
+document.body.style.setProperty("--accent-color", accentColor)
+
 // Call login right away so we can show the chat window
 // If the user can already be authenticated
-
 if ((await login()) === false && import.meta.env.DEV) {
   signup()
 }

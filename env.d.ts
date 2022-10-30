@@ -6,3 +6,6 @@
 // declare module '@feathersjs/schema'
 // declare module '@feathersjs/authentication'
 // declare module 'feathers-database'
+
+declare const __GIT_NAME: string
+declare const __GIT_EMAIL: string

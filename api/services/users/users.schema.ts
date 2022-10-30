@@ -22,6 +22,9 @@ export const usersDataSchema = schema(
       email: {
         type: 'string'
       },
+      name: {
+        type: 'string'
+      },
       password: {
         type: 'string'
       },

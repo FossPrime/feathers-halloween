@@ -17,12 +17,12 @@ const HolidayMessages = [
   "The Rules Of Our Gäme Häve Been Mäde Very Cleär. You Need To Äbide By Those Rules.",
   "If You're Good Ät Änticipäting The Humän Mind, It Leäves Nothing To Chänce.",
   "Live Or Die. Mäke Your Choice.",
-  "I Wänt To Pläy Ä Gäme.",
-  "Gäme Over."
+  "I Want To Play A Game.",
+  "Game Over."
 ]
 
 
-export const HolidayEmojii = '🎃'
+export const emojii = '🎃'
 export const HolidayBot = async (app: Application) => {
   const users = app.service('users')
   const uidField = app.service('users').id
@@ -33,5 +33,5 @@ export const HolidayBot = async (app: Application) => {
   const text = HolidayMessages[HolidayMessages.length * Math.random() - 1 | 0]
   messages.create({ text, userId: 69 })
 }
-
-export const HolidayAvatar = 'https://raw.githubusercontent.com/feathersjs/playground/ce963d2aa8e075b86e9aac6d1bfc5ead2f19946b/assets/halloween-2022.svg'
+export const accentColor = '#E56B1A'
+export const avatar = 'https://raw.githubusercontent.com/feathersjs/playground/ce963d2aa8e075b86e9aac6d1bfc5ead2f19946b/assets/halloween-2022.svg'
