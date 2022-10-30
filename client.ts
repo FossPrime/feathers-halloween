@@ -187,7 +187,7 @@ const showChat = async () => {
 // Retrieve email/password object from the login/signup page
 const getCredentials = () => {
   const dev = import.meta.env.DEV
-    ? 'Droid #' + crypto.getRandomValues(new Uint16Array(1))
+    ? 'You #' + crypto.getRandomValues(new Uint16Array(1))
     : ''
   const email =
     document.querySelector<HTMLInputElement>('[name="email"]')?.value
