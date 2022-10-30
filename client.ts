@@ -59,7 +59,7 @@ const loginScreenHTML = `<main class="login container">
 const chatHTML = `<main class="flex flex-column">
   <header class="title-bar flex flex-row flex-center">
     <div class="title-wrapper block center-element">
-    ${emojii} <img class="logo" src="https://feathersjs.com/img/feathers-logo-wide.png"
+    ${emojii} <img class="logo" src="https://raw.githubusercontent.com/feathersjs/feathers/ae85fa216f12f7ff5d15e7039640e27a09989ea4/docs/public/img/feathers-logo-horizontal.svg"
         alt="Feathers"> ${emojii}
     </div>
   </header>
@@ -123,13 +123,10 @@ const addMessage = (message: MessagesData) => {
 
   if (chat) {
     const img = user
-      ? `<img src="${user.avatar}" alt="${user.name || user.email
-      }" class="avatar" crossorigin="anonymous">`
+      ? `<img src="${user.avatar}" alt="${user.name}" class="avatar" crossorigin="anonymous">`
       : ''
     const userName = user
-      ? `<span class="username font-600">${escape(
-        user.name || user.email || ''
-      )}</span>`
+      ? `<span class="username font-600">${escape(user.name || '')}</span>`
       : ''
     chat.innerHTML += `<div class="message flex flex-row">${img}
       <div class="message-wrapper">

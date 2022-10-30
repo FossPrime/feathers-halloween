@@ -15,7 +15,6 @@ export default function (app: Application) {
     if (conn) {
       // REST has no real-time connection
       const user = authResult.user
-      // console.log('Conm,', authResult )
       app.channel('anonymous').leave(conn)
       app.channel('authenticated').join(conn)
       const messages = app.service('messages')
