@@ -212,7 +212,7 @@ const login = async (credentials?: any): Promise<boolean> => {
         strategy: 'local',
         ...credentials
       })
-    } else if (localStorage.getItem(storageKey)) {
+    } else if (sessionStorage.getItem(storageKey)) {
       // TODO: Why does this try to authenticate without a JWT... causing errors in the server
       await client.reAuthenticate()
     } else {
@@ -223,6 +223,7 @@ const login = async (credentials?: any): Promise<boolean> => {
     showChat()
     return true
   } catch (error) {
+    console.error(error);
     // If we got an error, show the login page
     await logout()
     return false
@@ -233,7 +234,7 @@ const logout = async () => {
   try {
     await client.logout()
   } catch (e) { }
-  localStorage.removeItem('feathers-jwt')
+  sessionStorage.removeItem('feathers-jwt')
   showLogin()
 }
 
