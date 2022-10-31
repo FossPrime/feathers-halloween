@@ -100,7 +100,12 @@ export const HolidayBot = async (app: Application) => {
   })
 
 
-  app.service('messages').on('created', (m) => userId !== m.userId && sendMessage(userId, getRandom(HolidayMessages)))
+  app.service('messages').on('created', async (m) => {
+      await sleep(0.3 + 1 * Math.random())
+      if (userId !== m.userId) {
+        sendMessage(userId, getRandom(HolidayMessages))
+      }
+  })
 }
 
 
