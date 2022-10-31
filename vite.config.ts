@@ -2,7 +2,6 @@ import { defineConfig } from 'vite'
 import { feathers } from 'feathers-vite'
 import util from 'node:util'
 import { execFile } from 'node:child_process'
-import { stat } from 'node:fs/promises'
 import './api/HolidayBot'
 
 async function getDevUser() {
@@ -19,7 +18,6 @@ async function getDevUser() {
     return
   } else {
     const result = { name: gi[0], email: gi[1] }
-    console.log(result)
     return result
   }
 }

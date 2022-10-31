@@ -14,7 +14,6 @@ import {
   usersResultSchema,
   usersQuerySchema
 } from '../../services/users/users.schema.js'
-const HolidayAssets = globalThis.process.env.VITE_HOLIDAY ? JSON.parse(globalThis.process.env.VITE_HOLIDAY) : {}
 
 // Resolver for the basic data model (e.g. creating new entries)
 export const usersDataResolver = resolve<UsersData, HookContext>({
@@ -23,15 +22,14 @@ export const usersDataResolver = resolve<UsersData, HookContext>({
   properties: {
     name: async (_value, u) => _value || u.email.charAt(0).toLocaleUpperCase() + u.email.split('@').at(0).slice(1),
     password: passwordHash({ strategy: 'local' }),
-    avatar: async (_value, user, context) => {
+    avatar: async (_value, user) => {
       // Gravatar uses MD5 hashes from an email address to get the image
-      const uidField = context.app.service('users').id
       const hash = crypto
         .createHash('md5')
         .update(user.email.toLowerCase())
         .digest('hex')
       // Return the full avatar URL
-      return user[uidField] === 69 ? HolidayAssets.avatar : `https://s.gravatar.com/avatar/${hash}?s=60`
+      return _value || `https://s.gravatar.com/avatar/${hash}?s=60`
     }
   }
 })

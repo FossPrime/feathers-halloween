@@ -10,12 +10,6 @@ export const usersDataSchema = schema(
     additionalProperties: false,
     required: ['email', 'password'],
     properties: {
-      _id: { // MongoDB style
-        type: 'number'
-      },
-      id: { // Postgress style
-        type: 'number'
-      },
       createdAt: {
         type: 'string'
       },
@@ -67,7 +61,7 @@ export const usersResultSchema = schema(
     properties: {
       ...usersDataSchema.definition.properties,
       _id: {
-        type: 'string'
+        type: 'number'
       }
     }
   } as const,

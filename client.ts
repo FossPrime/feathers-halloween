@@ -6,7 +6,7 @@ import {
   authentication
 } from '@feathersjs/client'
 import io from 'socket.io-client'
-import type { MessagesData } from './api/services/messages/messages.schema.js'
+import type { MessagesData, MessagesResult } from './api/services/messages/messages.schema.js'
 import type { UsersData } from './api/services/users/users.schema.js'
 
 // Establish a Socket.io connection
@@ -99,7 +99,7 @@ const addUser = (user: UsersData) => {
   userList.innerHTML += `<li>
     <a class="block relative" href="#">
       <img src="${user.avatar}" alt="" class="avatar" crossorigin="anonymous">
-      <span class="absolute username">${escape(user.email)}</span>
+      <span class="absolute username">${escape(user.name)}</span>
     </a>
   </li>`
 
@@ -112,7 +112,7 @@ const addUser = (user: UsersData) => {
 }
 
 // Renders a message to the page
-const addMessage = (message: MessagesData) => {
+const addMessage = (message: MessagesResult) => {
   // The user that sent this message (added by the populate-user hook)
   const user = message.user || (undefined as any)
   const chat = document.querySelector('.chat')
@@ -177,9 +177,6 @@ const showChat = async () => {
   // Add each user to the list
   users.data.forEach(addUser)
 
-  if (messages.data.length === 0) {
-    addMessage({ text: `For documentation, visit dove.feathersjs.com` })
-  }
 }
 
 // Retrieve email/password object from the login/signup page

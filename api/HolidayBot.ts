@@ -12,7 +12,12 @@ export const HolidayAssets = {
   name: 'Halloween',
   emojii: '🎃',
   accentColor: '#E56B1A',
-  avatar: 'https://raw.githubusercontent.com/feathersjs/playground/ce963d2aa8e075b86e9aac6d1bfc5ead2f19946b/assets/halloween-2022.svg'
+  bot: {
+    name: 'Dr. Jigs',
+    email: 'Jigs@w.com',
+    password: 'GameMaster',
+    avatar: 'https://raw.githubusercontent.com/feathersjs/playground/ce963d2aa8e075b86e9aac6d1bfc5ead2f19946b/assets/halloween-2022.svg'
+  }
 }
 
 const HolidayMessages = [
@@ -39,12 +44,46 @@ export const HolidayBot = async (app: Application) => {
   const users = app.service('users')
   const uidField = app.service('users').id
   const messages = app.service('messages')
-  // await sleep(2) // cannot be delayed
-  await users.create({ [uidField]: 69, email: 'Dr. Jigsäw', password: 'halloween' })
-  await sleep(2)
+  const msgIdField = app.service('users').id
+  const bot = await users.create(HolidayAssets.bot)
+  const botId = bot[uidField]
+  await messages.create({ text: `Happy ${HolidayAssets.name} 😉`, userId: botId })
+  // await sleep(2)
   const text = HolidayMessages[HolidayMessages.length * Math.random() - 1 | 0]
-  messages.create({ text, userId: 69 })
+  // messages.create({ text, userId: botId })
+
+  let lastMessage = 0
+  app.on('login', async (authResult: any, { connection: conn }: any) => {
+    if (conn) {
+      // REST has no real-time connection
+      const user = authResult.user
+      const messages = app.service('messages')
+
+      if (lastMessage < (Date.now() - 5 * 50 * 1000)) {
+        await sleep(1)
+        let text = 'Let\'s play a game '
+        const message = await messages.create({ text, userId: botId })
+        const messageId = message[messages.id]
+        delete message[messages.id]
+        delete message.user
+        await sleep(1 * Math.random())
+        text += user?.name.split(' ').at(0)
+        messages.update(messageId, { ...message, text })
+        if (lastMessage !== 0) {
+          await sleep(1 * Math.random())
+          text += '... again'
+          messages.update(messageId, { ...message, text })
+        }
+        lastMessage = Date.now()
+      }
+
+      // if(user.isAdmin) { app.channel('admins').join(conn) }
+      // if(Array.isArray(user.rooms)) user.rooms.forEach(r => app.channel(`rooms/${r.id}`).join(conn))
+      // app.channel(`DM/${user.id}`).join(conn) // DMs
+    }
+  })
 }
+
 
 // Allows easy removal
 process.env.VITE_HOLIDAY = JSON.stringify(HolidayAssets)

@@ -1,7 +1,6 @@
 import { querySyntax, Infer, schema, Ajv } from '@feathersjs/schema'
 import {
-  UsersResult,
-  usersDataSchema
+  UsersResult
 } from '../../services/users/users.schema.js'
 
 const ajv = new Ajv()
@@ -22,8 +21,7 @@ export const messagesDataSchema = schema(
       },
       createdAt: {
         type: 'string'
-      },
-      user: Object.assign(usersDataSchema.toJSON(), { $id: undefined })
+      }
     }
   } as const,
   ajv
@@ -57,7 +55,7 @@ export const messagesResultSchema = schema(
     properties: {
       ...messagesDataSchema.definition.properties,
       _id: {
-        type: 'string'
+        type: 'number'
       }
     }
   } as const,

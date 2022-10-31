@@ -2,6 +2,7 @@
 import { HookContext } from '@feathersjs/feathers'
 import { Application } from './declarations.js'
 
+let warningDelivered = false
 export default function (app: Application) {
   if (typeof app.channel !== 'function') {
     return // real-time features are turned off
@@ -14,11 +15,9 @@ export default function (app: Application) {
   app.on('login', (authResult: any, { connection: conn }: any) => {
     if (conn) {
       // REST has no real-time connection
-      const user = authResult.user
+      // const user = authResult.user
       app.channel('anonymous').leave(conn)
       app.channel('authenticated').join(conn)
-      const messages = app.service('messages')
-      messages.create({ text: 'Let\'s play a game ' + user?.name, userId: 69 })
 
       // if(user.isAdmin) { app.channel('admins').join(conn) }
       // if(Array.isArray(user.rooms)) user.rooms.forEach(r => app.channel(`rooms/${r.id}`).join(conn))
@@ -29,7 +28,10 @@ export default function (app: Application) {
   // Register event publishers to channels
   app.publish((data: any, hook: HookContext) => {
     // `app.publish(EVENT_NAME, () => {})` // publish only for a specific event
-    console.warn('Publishing all events to ALL authenticated users.')
+    if (!warningDelivered) {
+      console.warn('Publishing all events to ALL authenticated users.')
+      warningDelivered = true
+    }
     return app.channel('authenticated')
   })
 
