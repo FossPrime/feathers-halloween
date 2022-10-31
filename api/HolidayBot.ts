@@ -7,6 +7,9 @@ It is then safe to delete this file.
 */
 import type { Application } from './declarations.js'
 const sleep = (s: number) => new Promise((r) => setTimeout(r, s * 1000 | 0))
+const context = {
+  app: null as Application
+}
 
 export const HolidayAssets = {
   name: 'Halloween',
@@ -40,17 +43,39 @@ const HolidayMessages = [
   "Game Over."
 ]
 
+
+async function* spookyAI(text:string) {
+  const words = text.split(' ')
+  for (const word of words) {
+    await sleep(word.length * 0.05 + 1 * Math.random())
+    yield word
+  }
+  return  ''
+}
+
+const sendMessage = async (userId, fullText) => {
+  let text = ''
+  const messages = context.app.service('messages')
+  const message = await messages.create({ text: '', userId })
+  const messageId = message[messages.id]
+  delete message[messages.id] // task: user a resolver to remove these before validation
+  delete message.user
+
+  for await (const word of spookyAI(fullText)) {
+    text += ' ' + await word
+    messages.update(messageId, { ...message, text })
+  }
+}
+
 export const HolidayBot = async (app: Application) => {
+  context.app = app
   const users = app.service('users')
   const uidField = app.service('users').id
   const messages = app.service('messages')
   const msgIdField = app.service('users').id
   const bot = await users.create(HolidayAssets.bot)
-  const botId = bot[uidField]
-  await messages.create({ text: `Happy ${HolidayAssets.name} 😉`, userId: botId })
-  // await sleep(2)
-  const text = HolidayMessages[HolidayMessages.length * Math.random() - 1 | 0]
-  // messages.create({ text, userId: botId })
+  const userId = bot[uidField]
+  await sendMessage(userId, `Happy ${HolidayAssets.name} 😉`)
 
   let lastMessage = 0
   app.on('login', async (authResult: any, { connection: conn }: any) => {
@@ -62,19 +87,11 @@ export const HolidayBot = async (app: Application) => {
       if (lastMessage < (Date.now() - 5 * 50 * 1000)) {
         await sleep(1)
         let text = 'Let\'s play a game '
-        const message = await messages.create({ text, userId: botId })
-        const messageId = message[messages.id]
-        delete message[messages.id]
-        delete message.user
-        await sleep(1 * Math.random())
-        text += user?.name.split(' ').at(0)
-        messages.update(messageId, { ...message, text })
         if (lastMessage !== 0) {
-          await sleep(1 * Math.random())
           text += '... again'
-          messages.update(messageId, { ...message, text })
         }
         lastMessage = Date.now()
+        await sendMessage(userId, text)
       }
 
       // if(user.isAdmin) { app.channel('admins').join(conn) }

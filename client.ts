@@ -6,7 +6,7 @@ import {
   authentication
 } from '@feathersjs/client'
 import io from 'socket.io-client'
-import type { MessagesData, MessagesResult } from './api/services/messages/messages.schema.js'
+import type { MessagesResult } from './api/services/messages/messages.schema.js'
 import type { UsersData } from './api/services/users/users.schema.js'
 
 // Establish a Socket.io connection
@@ -26,8 +26,9 @@ const escape = (str: any) =>
 
 
 const appEl = document.getElementById('app') as HTMLDivElement
-const holiday = import.meta.env.VITE_HOLIDAY ? JSON.parse(import.meta.env.VITE_HOLIDAY) : {}
-document.body.style.setProperty("--accent-color", holiday.accentColor)
+const store = {
+  holiday: import.meta.env.VITE_HOLIDAY ? JSON.parse(import.meta.env.VITE_HOLIDAY) : {}
+}
 const loginScreenHTML = `<main class="login container">
   <div class="row">
     <div class="col-12 col-6-tablet push-3-tablet text-center heading">
@@ -61,8 +62,8 @@ const loginScreenHTML = `<main class="login container">
 const chatHTML = `<main class="flex flex-column">
   <header class="title-bar flex flex-row flex-center">
     <div class="title-wrapper block center-element">
-    ${holiday.emojii} <img class="logo" src="https://raw.githubusercontent.com/feathersjs/feathers/ae85fa216f12f7ff5d15e7039640e27a09989ea4/docs/public/img/feathers-logo-horizontal.svg"
-        alt="Feathers"> ${holiday.emojii}
+    ${store.holiday.emojii} <img class="logo" src="https://raw.githubusercontent.com/feathersjs/feathers/ae85fa216f12f7ff5d15e7039640e27a09989ea4/docs/public/img/feathers-logo-horizontal.svg"
+        alt="Feathers"> ${store.holiday.emojii}
     </div>
   </header>
 
@@ -113,11 +114,21 @@ const addUser = (user: UsersData) => {
 
 // Renders a message to the page
 const addMessage = (message: MessagesResult) => {
+  const contentClass = 'message-content'
   // The user that sent this message (added by the populate-user hook)
   const user = message.user || (undefined as any)
+  const id = message['_id'] || message['id'] // support different DBs/APIs. Task: Replace with a trivial resolver that always returns _id
+  const messageId = 'messageId-'+ id
   const chat = document.querySelector('.chat')
+  const messageEl = chat.querySelector('.'+ messageId)
+  if (messageEl) {
+    const contentEl = messageEl.querySelector('.'+contentClass)
+    contentEl.textContent = message.text
+    return
+  }
+
   // Escape HTML to prevent XSS attacks
-  const text = escape(message.text)
+  const text = escape(message.text) // task: use DOM instead
   const dtf = new Intl.DateTimeFormat(undefined, { timeStyle: 'short' })
   const prettyD = message.createdAt
     ? dtf.format(new Date(message.createdAt as string))
@@ -130,12 +141,12 @@ const addMessage = (message: MessagesResult) => {
     const userName = user
       ? `<span class="username font-600">${escape(user.name || '')}</span>`
       : ''
-    chat.innerHTML += `<div class="message flex flex-row">${img}
+    chat.innerHTML += `<div class="${messageId} message flex flex-row">${img}
       <div class="message-wrapper">
         <p class="message-header"> ${userName}
           <span class="sent-date font-300">${prettyD}</span>
         </p>
-        <p class="message-content font-300">${text}</p>
+        <p class="${contentClass} font-300">${text}</p>
       </div>
     </div>`
 
@@ -181,7 +192,6 @@ const showChat = async () => {
 
 // Retrieve email/password object from the login/signup page
 const getCredentials = () => {
-  console.log(import.meta.env.VITE_USER)
   const dev = import.meta.env.VITE_USER ? { ...JSON.parse(import.meta.env.VITE_USER), password: 'password' } : false
   const email =
     document.querySelector<HTMLInputElement>('[name="email"]')?.value || ''
@@ -282,14 +292,17 @@ addEventListener('#send-message', 'submit', async (ev: any) => {
   input.value = ''
 })
 
-// Listen to created events and add the new message in real-time
+// Real-time event listeners for messages and users
 client.service('messages').on('created', addMessage)
-
-// We will also see when new users get created in real-time
+client.service('messages').on('updated', addMessage)
 client.service('users').on('created', addUser)
 
-// Call login right away so we can show the chat window
-// If the user can already be authenticated
-if ((await login()) === false && import.meta.env.DEV) {
-  signup()
+const main = async (D: Document) => {
+  D.body.style.setProperty("--accent-color", store.holiday.accentColor)
+
+  // If DEV, login at boot so we can show the chat window
+  if ((await login()) === false && import.meta.env.DEV) {
+    signup()
+  }
 }
+main(document)
