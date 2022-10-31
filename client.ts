@@ -223,7 +223,6 @@ const login = async (credentials?: any): Promise<boolean> => {
     showChat()
     return true
   } catch (error) {
-    console.error(error);
     // If we got an error, show the login page
     await logout()
     return false
