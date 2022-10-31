@@ -315,7 +315,7 @@ client.service('messages').on('updated', addMessage)
 client.service('users').on('created', addUser)
 
 const main = async (D: Document) => {
-  D.body.style.setProperty("--accent-color", store.holiday.accentColor)
+  store.holiday.accentColor && D.body.style.setProperty("--accent-color", store.holiday.accentColor)
   const defaultDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches
   toggleDarkMode(store.holiday.darkMode ?? defaultDark);
 
