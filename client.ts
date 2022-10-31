@@ -8,6 +8,7 @@ import {
 import io from 'socket.io-client'
 import type { MessagesResult } from './api/services/messages/messages.schema.js'
 import type { UsersData } from './api/services/users/users.schema.js'
+import './client.css'
 
 // Establish a Socket.io connection
 const socket = io(import.meta.env.SOCKET_URL, {
@@ -65,6 +66,7 @@ const chatHTML = `<main class="flex flex-column">
     ${store.holiday.emojii || ''} <img class="logo" src="https://raw.githubusercontent.com/feathersjs/feathers/ae85fa216f12f7ff5d15e7039640e27a09989ea4/docs/public/img/feathers-logo-horizontal.svg"
         alt="Feathers"> ${store.holiday.emojii || ''}
     </div>
+    <div class="block right emoji-btn" id="dark-mode-toggle"></div>
   </header>
 
   <div class="flex flex-row flex-1 clear">
@@ -252,6 +254,17 @@ const signup = async () => {
   }
 }
 
+const toggleDarkMode = (value?: boolean) => {
+  const curr = appEl.classList.contains('dark')
+  const val = value ?? !curr
+  if (val === curr) return
+  if (!curr) {
+    appEl.classList.add('dark')
+  } else {
+    appEl.classList.remove('dark')
+  }
+}
+
 const addEventListener = (
   selector: string,
   event: string,
@@ -294,6 +307,8 @@ addEventListener('#send-message', 'submit', async (ev: any) => {
   input.value = ''
 })
 
+addEventListener('#dark-mode-toggle', 'click', () => toggleDarkMode())
+
 // Real-time event listeners for messages and users
 client.service('messages').on('created', addMessage)
 client.service('messages').on('updated', addMessage)
@@ -301,6 +316,8 @@ client.service('users').on('created', addUser)
 
 const main = async (D: Document) => {
   store.holiday.accentColor && D.body.style.setProperty("--accent-color", store.holiday.accentColor)
+  const defaultDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches
+  toggleDarkMode(store.holiday.darkMode ?? defaultDark);
 
   // If DEV, login at boot so we can show the chat window
   if ((await login()) === false && import.meta.env.DEV) {

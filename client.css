@@ -1,0 +1,99 @@
+
+aside.sidebar .user-list,
+main.chat {
+  overflow-y: auto;
+}
+
+.emoji-btn {
+  font-size: 16px;
+  margin-right: 16px;
+  padding: 8px;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 250ms ease-in;
+}
+.emoji-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#dark-mode-toggle::before {
+  content: '🔆';
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+-webkit-scrollbar-thumb {
+  display: none;
+}
+
+#app *:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0, 0.3);
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+  display: initial;
+}
+
+#app *:hover::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0,0,0, 0.5);
+}
+
+/* Dark Mode */
+#app.dark {
+  background-color: #151515;
+  color: white;
+}
+
+#app.dark h1{
+  color: white;
+}
+
+#app.dark header.title-bar,
+#app.dark .sidebar {
+  background-color: #252525;
+  border-color: #353535;
+}
+
+#app.dark .username {
+  color: white;
+  cursor: pointer;
+}
+
+#app.dark .username:hover {
+  color: var(--accent-color);
+}
+
+#app.dark .logo {
+  filter: invert();
+}
+
+#app.dark input {
+  background-color: #353535;
+  color: white;
+}
+
+#app.dark *:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(255,255,255, 0.3);
+}
+
+#app.dark *:hover::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255,255,255, 0.5);
+}
+
+#app.dark .emoji-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+#app.dark #dark-mode-toggle::before {
+  content: '🌙';
+}
