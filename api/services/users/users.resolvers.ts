@@ -14,7 +14,7 @@ import {
   usersResultSchema,
   usersQuerySchema
 } from '../../services/users/users.schema.js'
-import { avatar } from '../../HolidayBot.js'
+const HolidayAssets = globalThis.process.env.VITE_HOLIDAY ? JSON.parse(globalThis.process.env.VITE_HOLIDAY) : {}
 
 // Resolver for the basic data model (e.g. creating new entries)
 export const usersDataResolver = resolve<UsersData, HookContext>({
@@ -31,7 +31,7 @@ export const usersDataResolver = resolve<UsersData, HookContext>({
         .update(user.email.toLowerCase())
         .digest('hex')
       // Return the full avatar URL
-      return user[uidField] === 69 ? avatar : `https://s.gravatar.com/avatar/${hash}?s=60`
+      return user[uidField] === 69 ? HolidayAssets.avatar : `https://s.gravatar.com/avatar/${hash}?s=60`
     }
   }
 })

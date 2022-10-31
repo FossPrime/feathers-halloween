@@ -6,7 +6,6 @@ import {
   authentication
 } from '@feathersjs/client'
 import io from 'socket.io-client'
-import { emojii, accentColor } from './api/HolidayBot.js'
 import type { MessagesData } from './api/services/messages/messages.schema.js'
 import type { UsersData } from './api/services/users/users.schema.js'
 
@@ -25,7 +24,10 @@ client.configure(authentication({ storageKey, storage: sessionStorage }))
 const escape = (str: any) =>
   str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
+
 const appEl = document.getElementById('app') as HTMLDivElement
+const holiday = import.meta.env.VITE_HOLIDAY ? JSON.parse(import.meta.env.VITE_HOLIDAY) : {}
+document.body.style.setProperty("--accent-color", holiday.accentColor)
 const loginScreenHTML = `<main class="login container">
   <div class="row">
     <div class="col-12 col-6-tablet push-3-tablet text-center heading">
@@ -59,8 +61,8 @@ const loginScreenHTML = `<main class="login container">
 const chatHTML = `<main class="flex flex-column">
   <header class="title-bar flex flex-row flex-center">
     <div class="title-wrapper block center-element">
-    ${emojii} <img class="logo" src="https://raw.githubusercontent.com/feathersjs/feathers/ae85fa216f12f7ff5d15e7039640e27a09989ea4/docs/public/img/feathers-logo-horizontal.svg"
-        alt="Feathers"> ${emojii}
+    ${holiday.emojii} <img class="logo" src="https://raw.githubusercontent.com/feathersjs/feathers/ae85fa216f12f7ff5d15e7039640e27a09989ea4/docs/public/img/feathers-logo-horizontal.svg"
+        alt="Feathers"> ${holiday.emojii}
     </div>
   </header>
 
@@ -182,8 +184,8 @@ const showChat = async () => {
 
 // Retrieve email/password object from the login/signup page
 const getCredentials = () => {
-  console.log(__DEV_USER)
-  const dev = __DEV_USER ? { email: __DEV_USER.email, password: 'password' } : false
+  console.log(import.meta.env.VITE_USER)
+  const dev = import.meta.env.VITE_USER ? { ...JSON.parse(import.meta.env.VITE_USER), password: 'password' } : false
   const email =
     document.querySelector<HTMLInputElement>('[name="email"]')?.value || ''
   const password =
@@ -288,8 +290,6 @@ client.service('messages').on('created', addMessage)
 
 // We will also see when new users get created in real-time
 client.service('users').on('created', addUser)
-
-document.body.style.setProperty("--accent-color", accentColor)
 
 // Call login right away so we can show the chat window
 // If the user can already be authenticated

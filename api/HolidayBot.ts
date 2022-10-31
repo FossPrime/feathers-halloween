@@ -1,5 +1,19 @@
+/*
+# Holiday feature
+
+To disable holiday features remove the reference to this file in `vite.config.ts`.
+It is then safe to delete this file.
+
+*/
 import type { Application } from './declarations.js'
 const sleep = (s: number) => new Promise((r) => setTimeout(r, s * 1000 | 0))
+
+export const HolidayAssets = {
+  name: 'Halloween',
+  emojii: '🎃',
+  accentColor: '#E56B1A',
+  avatar: 'https://raw.githubusercontent.com/feathersjs/playground/ce963d2aa8e075b86e9aac6d1bfc5ead2f19946b/assets/halloween-2022.svg'
+}
 
 const HolidayMessages = [
   "Yes, I'm Sick, Officer. Sick From The Diseäse Eäting Awäy At Me Inside. Sick Of People Who Don't Appreciäte Their Blessings. Sick Of Those Who Scoff At The Suffering Of Others. I'm Sick Of It All!",
@@ -21,8 +35,6 @@ const HolidayMessages = [
   "Game Over."
 ]
 
-
-export const emojii = '🎃'
 export const HolidayBot = async (app: Application) => {
   const users = app.service('users')
   const uidField = app.service('users').id
@@ -33,5 +45,6 @@ export const HolidayBot = async (app: Application) => {
   const text = HolidayMessages[HolidayMessages.length * Math.random() - 1 | 0]
   messages.create({ text, userId: 69 })
 }
-export const accentColor = '#E56B1A'
-export const avatar = 'https://raw.githubusercontent.com/feathersjs/playground/ce963d2aa8e075b86e9aac6d1bfc5ead2f19946b/assets/halloween-2022.svg'
+
+// Allows easy removal
+process.env.VITE_HOLIDAY = JSON.stringify(HolidayAssets)

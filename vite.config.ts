@@ -2,6 +2,8 @@ import { defineConfig } from 'vite'
 import { feathers } from 'feathers-vite'
 import util from 'node:util'
 import { execFile } from 'node:child_process'
+import { stat } from 'node:fs/promises'
+import './api/HolidayBot'
 
 async function getDevUser() {
   const run = util.promisify(execFile)
@@ -24,12 +26,13 @@ async function getDevUser() {
 
 // https://vitejs.dev/config/#async-config
 export default defineConfig(async ({ command, mode }) => {
-  const devUser = mode === 'development' ? await getDevUser() : undefined
-
-  return {
-    plugins: [feathers()],
-    define: {
-      __DEV_USER: JSON.stringify(devUser)
-    }
+  const config = {
+    plugins: [feathers()]
   }
+
+  if (mode === 'development') {
+    process.env.VITE_USER = JSON.stringify(await getDevUser())
+  }
+
+  return config
 })

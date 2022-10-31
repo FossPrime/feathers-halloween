@@ -7,4 +7,13 @@
 // declare module '@feathersjs/authentication'
 // declare module 'feathers-database'
 
-declare const __DEV_USER: { name: string, email: string }
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  readonly VITE_HOLIDAY: string
+  readonly VITE_USER: string
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv
+}
