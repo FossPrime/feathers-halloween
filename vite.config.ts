@@ -14,7 +14,7 @@ async function getDevUser() {
     ])))
   } catch { console.debug('Using default dev user') }
   const gi = giRaw.map(v => v.stdout?.trim())
-  if (gi.some(v => v === undefined)) {
+  if (gi.length === 0 || gi.some(v => v === undefined)) {
     return
   } else {
     const result = { name: gi[0], email: gi[1] }
