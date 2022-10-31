@@ -63,8 +63,8 @@ const loginScreenHTML = `<main class="login container">
 const chatHTML = `<main class="flex flex-column">
   <header class="title-bar flex flex-row flex-center">
     <div class="title-wrapper block center-element">
-    ${store.holiday.emojii} <img class="logo" src="https://raw.githubusercontent.com/feathersjs/feathers/ae85fa216f12f7ff5d15e7039640e27a09989ea4/docs/public/img/feathers-logo-horizontal.svg"
-        alt="Feathers"> ${store.holiday.emojii}
+    ${store.holiday.emojii || ''} <img class="logo" src="https://raw.githubusercontent.com/feathersjs/feathers/ae85fa216f12f7ff5d15e7039640e27a09989ea4/docs/public/img/feathers-logo-horizontal.svg"
+        alt="Feathers"> ${store.holiday.emojii || ''}
     </div>
     <div class="block right emoji-btn" id="dark-mode-toggle"></div>
   </header>
