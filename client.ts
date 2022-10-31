@@ -117,12 +117,13 @@ const addMessage = (message: MessagesResult) => {
   const contentClass = 'message-content'
   // The user that sent this message (added by the populate-user hook)
   const user = message.user || (undefined as any)
-  const id = message['_id'] || message['id'] // support different DBs/APIs. Task: Replace with a trivial resolver that always returns _id
+  console.log(message)
+  const id = message['_id'] || (message as any)['id'] // support different DBs/APIs. Task: Replace with a trivial resolver that always returns _id
   const messageId = 'messageId-'+ id
-  const chat = document.querySelector('.chat')
+  const chat = document.querySelector('.chat') as HTMLDivElement
   const messageEl = chat.querySelector('.'+ messageId)
   if (messageEl) {
-    const contentEl = messageEl.querySelector('.'+contentClass)
+    const contentEl = messageEl.querySelector('.'+contentClass) || {} as any
     contentEl.textContent = message.text
     return
   }

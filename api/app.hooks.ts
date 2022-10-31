@@ -24,7 +24,11 @@ export default {
     create: [createdAt]
   },
   after: {
-    all: (c: HookContext) => console.debug(`🏁  ${FCI(c)}`, c.data || '')
+    all: (c: HookContext) => {
+      const summarize = ['messages/update']
+      const data = summarize.includes(FCI(c)) ? '...' : c.data || ''
+      console.debug(`🏁  ${FCI(c)}`, data)
+    }
   },
   error: {
     all: [

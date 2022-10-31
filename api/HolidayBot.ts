@@ -10,6 +10,7 @@ const sleep = (s: number) => new Promise((r) => setTimeout(r, s * 1000 | 0))
 const context = {
   app: null as Application
 }
+const getRandom = (e: ArrayLike<string>) => e[e.length * Math.random() | 0]
 
 export const HolidayAssets = {
   name: 'Halloween',
@@ -78,17 +79,15 @@ export const HolidayBot = async (app: Application) => {
   await sendMessage(userId, `Happy ${HolidayAssets.name} 😉`)
 
   let lastMessage = 0
+  let count = 0
   app.on('login', async (authResult: any, { connection: conn }: any) => {
-    if (conn) {
-      // REST has no real-time connection
-      const user = authResult.user
-      const messages = app.service('messages')
-
-      if (lastMessage < (Date.now() - 5 * 50 * 1000)) {
+    if (conn) { // REST has no real-time connection
+      if (lastMessage < (Date.now() - 2 * 60 * 1000)) {
         await sleep(1)
         let text = 'Let\'s play a game '
         if (lastMessage !== 0) {
-          text += '... again'
+          count++
+          text += Array(count).fill('…').join(' ')+' again'
         }
         lastMessage = Date.now()
         await sendMessage(userId, text)
@@ -99,6 +98,9 @@ export const HolidayBot = async (app: Application) => {
       // app.channel(`DM/${user.id}`).join(conn) // DMs
     }
   })
+
+
+  app.service('messages').on('created', (m) => userId !== m.userId && sendMessage(userId, getRandom(HolidayMessages)))
 }
 
 
