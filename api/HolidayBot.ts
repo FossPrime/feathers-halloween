@@ -16,6 +16,7 @@ export const HolidayAssets = {
   name: 'Halloween',
   emojii: '🎃',
   accentColor: '#E56B1A',
+  darkMode: true,
   bot: {
     name: 'Dr. Jigs',
     email: 'Jigs@w.com',
